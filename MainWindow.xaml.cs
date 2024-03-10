@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace ImageConverter
 {
@@ -11,8 +12,8 @@ namespace ImageConverter
     {
         enum ConvertTypes
         {
-            PNGtoJPG = 0,
-            JPGtoPNG = 1
+            PNGtoJPG,
+            JPGtoPNG
         }
 
         ConvertTypes convertType = ConvertTypes.PNGtoJPG;
@@ -31,6 +32,18 @@ namespace ImageConverter
             string[] filePath = (string[])e.Data.GetData(DataFormats.FileDrop);
 
             selectedFile = filePath[0];
+
+            switch (Path.GetExtension(selectedFile))
+            {
+                case ".png":
+                    convertType = ConvertTypes.PNGtoJPG;
+                    ComboBox.SelectedIndex = 0;
+                    break;
+                case ".jpeg" or ".jpg":
+                    convertType = ConvertTypes.JPGtoPNG;
+                    ComboBox.SelectedIndex = 1;
+                    break;
+            }
 
             SetPreviewImage();
         }
@@ -83,15 +96,13 @@ namespace ImageConverter
         {
             ImageViewer.Source = null;
             selectedFile = null;
+            ComboBox.IsEnabled = false;
             InfoTextBlock.Text = "Select a file to convert";
         }
 
         private void ImageViewer_SourceUpdated(object sender, System.Windows.Data.DataTransferEventArgs e)
         {
-            if (ImageViewer.Source == null)
-            {
-                
-            }
+            //if (ImageViewer.Source != null)
         }
 
         private void TextBlock_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
