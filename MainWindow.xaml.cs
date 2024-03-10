@@ -96,7 +96,6 @@ namespace ImageConverter
         {
             ImageViewer.Source = null;
             selectedFile = null;
-            ComboBox.IsEnabled = false;
             InfoTextBlock.Text = "Select a file to convert";
         }
 
